@@ -1,5 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -10,6 +12,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -17,13 +20,25 @@ import javax.swing.SwingConstants;
 import java.awt.Canvas;
 import java.awt.TextField;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Button;
 import javax.swing.JFormattedTextField;
+import javax.swing.border.LineBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.font.ShapeGraphicAttribute;
+import java.awt.geom.Ellipse2D;
+import java.awt.event.ActionEvent;
 
 public class Interface extends JFrame {
 
 	private JPanel contentPane;
+	private Color corAtual;
+	private String shapeAtual;
+	private ArrayList<Shape> shapes;
 
 	/**
 	 * Launch the application.
@@ -40,7 +55,6 @@ public class Interface extends JFrame {
 			}
 		});
 	}
-
 	/**
 	 * Create the frame.
 	 * @throws ParseException 
@@ -78,15 +92,12 @@ public class Interface extends JFrame {
 		paintPanel.setBounds(127, 11, 412, 422);
 		getContentPane().add(paintPanel);
 		paintPanel.setLayout(null);
-		
-		Canvas paintCanvas = new Canvas();
-		paintCanvas.setBounds(10, 27, 392, 385);
-		paintPanel.add(paintCanvas);
-		paintCanvas.setBackground(Color.WHITE);
+		paintPanel.setBackground(Color.WHITE);
 		//------------------------------------------------------
 		
 		//Ferramentas ------------------------------------------
 		JPanel ferramentasPanel = new JPanel();
+		ferramentasPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		ferramentasPanel.setBounds(549, 38, 191, 395);
 		getContentPane().add(ferramentasPanel);
 		ferramentasPanel.setLayout(null);
@@ -96,6 +107,7 @@ public class Interface extends JFrame {
 		CorPanel.setBounds(10, 11, 18, 17);
 		ferramentasPanel.add(CorPanel);
 		
+		//Botão cor principal
 		Button mudarCor = new Button("OK");
 		mudarCor.setBounds(154, 11, 32, 17);
 		ferramentasPanel.add(mudarCor);
@@ -138,6 +150,7 @@ public class Interface extends JFrame {
 		ferramentasPanel.add(apagarBtn);
 		
 		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBounds(10, 100, 176, 250);
 		ferramentasPanel.add(panel);
 		panel.setLayout(null);
@@ -147,6 +160,7 @@ public class Interface extends JFrame {
 		panel.add(lblNewLabel);
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.setToolTipText("");
 		panel_1.setBounds(10, 38, 156, 79);
 		panel.add(panel_1);
@@ -180,6 +194,7 @@ public class Interface extends JFrame {
 		panel_1.add(corProp);
 		
 		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_2.setBounds(10, 128, 156, 79);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
@@ -226,5 +241,98 @@ public class Interface extends JFrame {
 		lblFerramentas.setBounds(570, 11, 139, 16);
 		getContentPane().add(lblFerramentas);
 		//------------------------------------------------------
+		
+		//Ações
+		try{
+			//Mudar cor objeto nao criado
+			mudarCor.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					int r = Integer.parseInt(red.getText().trim());
+					int g = Integer.parseInt(green.getText().trim());
+					int b = Integer.parseInt(blue.getText().trim());
+					if(r > 255 || g > 255 || b > 255)
+						JOptionPane.showMessageDialog(null, "O intervalo de cores é de 0 a 255", "ERRO", JOptionPane.ERROR_MESSAGE);
+					else {
+						CorPanel.setBackground(new Color(r, g, b));
+						corAtual = new Color(r, g, b);
+					}
+				}
+			});
+			//Shapes
+			circleBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					shapeAtual = "Círculo";
+				}
+			});
+			rectangleBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					shapeAtual = "Retângulo";
+				}
+			});
+			triangleBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					shapeAtual = "Triângulo";
+				}
+			});
+			//Canvas
+			paintPanel.addMouseListener(new MouseListener() {
+				
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mousePressed(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseExited(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if(shapeAtual.equals("Círculo")){
+						float raio = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite o raio do círculo", "Dimensões"));
+						Circulo aux = new Circulo(corAtual, raio);
+						aux.setX(e.getX());
+						aux.setX(e.getY());
+						
+						shapes.add(aux);
+					} else if (shapeAtual.equals("Retângulo")){
+						float base = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite a base do retângulo", "Dimensões"));
+						float altura = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite a altura do retângulo", "Dimensões"));
+						Retangulo aux = new Retangulo(corAtual, base, altura);
+						aux.setX(e.getX());
+						aux.setX(e.getY());
+						shapes.add(aux);
+					} else {
+						float base = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite a base do triângulo", "Dimensões"));
+						float altura = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite a altura do triângulo", "Dimensões"));
+						Triangulo aux = new Triangulo(corAtual, base, altura);
+						aux.setX(e.getX());
+						aux.setX(e.getY());
+						shapes.add(aux);
+					}
+					shapeAtual = null;
+					
+					//JOptionPane.showMessageDialog(null, , "teste", JOptionPane.ERROR_MESSAGE);
+				}
+			});
+		}
+		catch(Exception e){
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }

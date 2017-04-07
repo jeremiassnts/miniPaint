@@ -1,57 +1,26 @@
+import java.awt.Color;
 
-public class Shape {
+public abstract class Shape {
 
-	private String nome;
-	private String red;
-	private String green;
-	private String blue;
-	private int x;
-	private int y;
+	protected String nome;
+	protected Color cor;
+	protected int x;
+	protected int y;
 	
-	public Shape(String nm, String r, String g, String b, int X, int Y){
+	public Shape(String nm, Color Cor){
 		nome = nm;
-		red = r;
-		green = g;
-		blue = b;
-		x = X;
-		y = Y;
+		cor = Cor;
 	}
 	
-	public void setNome(String nm){
-		nome = nm;
-	}
-	public void setRed(String r){
-		red = r;
-	}
-	public void setGreen(String g){
-		green = g;
-	}
-	public void setBlue(String b){
-		blue = b;
-	}
-	public void setX(int X){
-		x = X;
-	}
-	public void setY(int Y){
-		y = Y;
-	}
+	public abstract void setCor(Color Cor);
+	public abstract void setX(int X);
+	public abstract void setY(int Y);
+
+	public abstract String getNome();
+	public abstract Color getCor();
+	public abstract int getX();
+	public abstract int getY();
 	
-	public String getNome(){
-		return nome;
-	}
-	public String getRed(){
-		return red;
-	}
-	public String getGreen(){
-		return green;
-	}
-	public String getBlue(){
-		return blue;
-	}
-	public int getX(){
-		return x;
-	}
-	public int getY(){
-		return y;
-	}
+	public abstract float getHeight();
+	public abstract float getWidth();
 }
