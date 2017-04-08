@@ -61,7 +61,7 @@ public class Interface extends JFrame {
 	 */
 	public Interface() throws ParseException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 762, 507);
+		setBounds(100, 100, 841, 532);
 		
 		//Menu e opções ----------------------------------------
 		JMenuBar menu = new JMenuBar();
@@ -81,15 +81,9 @@ public class Interface extends JFrame {
 		getContentPane().setLayout(null);
 		//------------------------------------------------------
 		
-		//Formas -----------------------------------------------
-		JScrollPane formasScrollPanel = new JScrollPane();
-		formasScrollPanel.setBounds(10, 38, 107, 395);
-		getContentPane().add(formasScrollPanel);
-		//------------------------------------------------------
-		
 		//Área de desennho -------------------------------------
 		JPanel paintPanel = new JPanel();
-		paintPanel.setBounds(127, 11, 412, 422);
+		paintPanel.setBounds(10, 11, 604, 447);
 		getContentPane().add(paintPanel);
 		paintPanel.setLayout(null);
 		paintPanel.setBackground(Color.WHITE);
@@ -98,7 +92,7 @@ public class Interface extends JFrame {
 		//Ferramentas ------------------------------------------
 		JPanel ferramentasPanel = new JPanel();
 		ferramentasPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		ferramentasPanel.setBounds(549, 38, 191, 395);
+		ferramentasPanel.setBounds(624, 38, 191, 420);
 		getContentPane().add(ferramentasPanel);
 		ferramentasPanel.setLayout(null);
 		
@@ -144,101 +138,23 @@ public class Interface extends JFrame {
 		JButton triangleBtn = new JButton("", triangleIcon);
 		triangleBtn.setBounds(136, 39, 50, 50);
 		ferramentasPanel.add(triangleBtn);
-		
-		JButton apagarBtn = new JButton("Apagar");
-		apagarBtn.setBounds(54, 361, 89, 23);
-		ferramentasPanel.add(apagarBtn);
-		
-		JPanel panel = new JPanel();
-		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel.setBounds(10, 100, 176, 250);
-		ferramentasPanel.add(panel);
-		panel.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("Propriedades");
-		lblNewLabel.setBounds(56, 5, 84, 14);
-		panel.add(lblNewLabel);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_1.setToolTipText("");
-		panel_1.setBounds(10, 38, 156, 79);
-		panel.add(panel_1);
-		panel_1.setLayout(null);
-		
-		JLabel lblCor = new JLabel("Cor");
-		lblCor.setBounds(69, 5, 38, 14);
-		panel_1.add(lblCor);
-		
-		JFormattedTextField redProp = new JFormattedTextField();
-		redProp.setBounds(36, 37, 32, 17);
-		panel_1.add(redProp);
-		new MaskFormatter("###").install(redProp);
-		redProp.setText("0");
-		
-		JFormattedTextField greenProp = new JFormattedTextField();
-		greenProp.setBounds(75, 37, 32, 17);
-		panel_1.add(greenProp);
-		new MaskFormatter("###").install(greenProp);
-		greenProp.setText("0");
-		
-		JFormattedTextField blueProp = new JFormattedTextField();
-		blueProp.setBounds(114, 37, 32, 17);
-		panel_1.add(blueProp);
-		new MaskFormatter("###").install(blueProp);
-		blueProp.setText("0");
-		
-		JPanel corProp = new JPanel();
-		corProp.setBackground(Color.BLACK);
-		corProp.setBounds(10, 37, 18, 17);
-		panel_1.add(corProp);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_2.setBounds(10, 128, 156, 79);
-		panel.add(panel_2);
-		panel_2.setLayout(null);
-		
-		JLabel lblPosio = new JLabel("Posi\u00E7\u00E3o");
-		lblPosio.setBounds(60, 5, 65, 14);
-		panel_2.add(lblPosio);
-		
-		JFormattedTextField posicaoXprop = new JFormattedTextField();
-		posicaoXprop.setBounds(33, 35, 44, 22);
-		panel_2.add(posicaoXprop);
-		new MaskFormatter("####").install(posicaoXprop);
-		posicaoXprop.setText("0");
-		
-		JFormattedTextField posicaoYprop = new JFormattedTextField();
-		posicaoYprop.setBounds(102, 35, 44, 22);
-		panel_2.add(posicaoYprop);
-		new MaskFormatter("####").install(posicaoYprop);
-		posicaoYprop.setText("0");
-		
-		JLabel lblNewLabel_1 = new JLabel("X");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(10, 35, 18, 22);
-		panel_2.add(lblNewLabel_1);
-		
-		JLabel lblY = new JLabel("Y");
-		lblY.setHorizontalAlignment(SwingConstants.CENTER);
-		lblY.setBounds(83, 35, 18, 22);
-		panel_2.add(lblY);
-		
-		JButton propBtn = new JButton("OK");
-		propBtn.setBounds(56, 216, 63, 23);
-		panel.add(propBtn);
 		//------------------------------------------------------
 		
 		//Labels -----------------------------------------------
 		JLabel lblFormas = new JLabel("FORMAS");
+		lblFormas.setBounds(41, 110, 107, 16);
+		ferramentasPanel.add(lblFormas);
 		lblFormas.setHorizontalAlignment(SwingConstants.CENTER);
-		lblFormas.setBounds(10, 11, 107, 16);
-		getContentPane().add(lblFormas);
+		//------------------------------------------------------
+		
+		//Formas -----------------------------------------------
+		JScrollPane formasScrollPanel = new JScrollPane();
+		formasScrollPanel.setBounds(10, 137, 171, 272);
+		ferramentasPanel.add(formasScrollPanel);
 		
 		JLabel lblFerramentas = new JLabel("FERRAMENTAS");
 		lblFerramentas.setHorizontalAlignment(SwingConstants.CENTER);
-		lblFerramentas.setBounds(570, 11, 139, 16);
+		lblFerramentas.setBounds(648, 11, 139, 16);
 		getContentPane().add(lblFerramentas);
 		//------------------------------------------------------
 		
