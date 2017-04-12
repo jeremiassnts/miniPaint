@@ -21,6 +21,7 @@ import java.awt.Canvas;
 import java.awt.TextField;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Button;
@@ -31,14 +32,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.font.ShapeGraphicAttribute;
 import java.awt.geom.Ellipse2D;
+import java.net.URL;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
 
 public class Interface extends JFrame {
 
 	private JPanel contentPane;
-	private Color corAtual;
-	private String shapeAtual;
-	private ArrayList<Shape> shapes;
+	private Color corAtual = Color.BLACK;
+	private String shapeAtual = null;
+	private List<Shape> shapes = new ArrayList<>();
 
 	/**
 	 * Launch the application.
@@ -190,60 +193,95 @@ public class Interface extends JFrame {
 					shapeAtual = "Triângulo";
 				}
 			});
-			//Canvas
-			paintPanel.addMouseListener(new MouseListener() {
-				
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mousePressed(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseExited(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
+			//Painel de pintura
+			paintPanel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					if(shapeAtual.equals("Círculo")){
-						float raio = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite o raio do círculo", "Dimensões"));
-						Circulo aux = new Circulo(corAtual, raio);
-						aux.setX(e.getX());
-						aux.setX(e.getY());
-						
-						shapes.add(aux);
-					} else if (shapeAtual.equals("Retângulo")){
-						float base = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite a base do retângulo", "Dimensões"));
-						float altura = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite a altura do retângulo", "Dimensões"));
-						Retangulo aux = new Retangulo(corAtual, base, altura);
-						aux.setX(e.getX());
-						aux.setX(e.getY());
-						shapes.add(aux);
-					} else {
-						float base = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite a base do triângulo", "Dimensões"));
-						float altura = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite a altura do triângulo", "Dimensões"));
-						Triangulo aux = new Triangulo(corAtual, base, altura);
-						aux.setX(e.getX());
-						aux.setX(e.getY());
-						shapes.add(aux);
+					if(shapeAtual != null){
+						try {
+							Boolean erro = true;
+							Boolean cancel = false;
+							if(shapeAtual.equals("Círculo")){
+								float raio = 0;
+								while(true){
+									try {
+										raio = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite o raio do círculo", ""));
+										erro = false;
+										if(raio != 0) break;
+									}catch(Exception exc){
+										if(exc.getMessage() == null) cancel = true;
+									}
+									finally {
+										if(cancel) break;
+										else if(erro || raio == 0)
+											JOptionPane.showMessageDialog(null, "Digite um valor válido", "ERRO", JOptionPane.ERROR_MESSAGE);
+									}
+								}
+								if(raio != 0){
+									Circulo aux = new Circulo(corAtual, raio);
+									aux.setX(e.getX());
+									aux.setX(e.getY());
+									shapes.add(aux);
+								}
+							} else if (shapeAtual.equals("Retângulo") || shapeAtual.equals("Triângulo")){
+								float base = 0;
+								float altura = 0;
+								//Define forma
+								String tipoForma = shapeAtual.equals("Retângulo") ? "retângulo" : "triângulo";
+								//Base
+								while(true){
+									try {
+										base = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite a base do " + tipoForma, ""));
+										erro = false;
+										if(base != 0) break;
+									}catch(Exception exc){
+										if(exc.getMessage() == null) cancel = true;
+									}
+									finally {
+										if(cancel) break;
+										else if(erro || base == 0)
+											JOptionPane.showMessageDialog(null, "Digite um valor válido", "ERRO", JOptionPane.ERROR_MESSAGE);
+									}
+								}
+								//Altura
+								erro = true;
+								cancel = false;
+								if(base != 0){
+									while(true){
+										try {
+											altura = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite a altura do " + tipoForma, ""));
+											erro = false;
+											if(altura != 0) break;
+										}catch(Exception exc){
+											if(exc.getMessage() == null) cancel = true;
+										}
+										finally {
+											if(cancel) break;
+											else if(erro || altura == 0)
+												JOptionPane.showMessageDialog(null, "Digite um valor válido", "ERRO", JOptionPane.ERROR_MESSAGE);
+										}
+									}
+								}
+								if(base != 0 && altura != 0){
+									if(shapeAtual.equals("Retângulo")){
+										Retangulo aux = new Retangulo(corAtual, base, altura);
+										aux.setX(e.getX());
+										aux.setX(e.getY());
+										shapes.add(aux);
+									} else {
+										Triangulo aux = new Triangulo(corAtual, base, altura);
+										aux.setX(e.getX());
+										aux.setX(e.getY());
+										shapes.add(aux);
+										}
+								}
+							}
+							shapeAtual = null;
+						}
+						catch(Exception ex){
+							JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro ao adicionar forma ao panel", JOptionPane.ERROR_MESSAGE);
+						}
 					}
-					shapeAtual = null;
-					
-					//JOptionPane.showMessageDialog(null, , "teste", JOptionPane.ERROR_MESSAGE);
 				}
 			});
 		}
