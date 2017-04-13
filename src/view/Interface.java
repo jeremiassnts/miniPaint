@@ -1,3 +1,4 @@
+package view;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -7,6 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
+
+import model.Circulo;
+import model.Retangulo;
+import model.Shape;
+import model.Triangulo;
+
 import javax.swing.JMenuBar;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -38,10 +45,11 @@ import java.awt.event.MouseAdapter;
 
 public class Interface extends JFrame {
 
-	private JPanel contentPane;
-	private Color corAtual = Color.BLACK;
-	private String shapeAtual = null;
-	private List<Shape> shapes = new ArrayList<>();
+	public static JPanel contentPane;
+	public static Color corAtual = Color.BLACK;
+	public static String shapeAtual = null;
+	public static List<Shape> shapes = new ArrayList<>();
+	public static AreaDesenho ad;
 
 	/**
 	 * Launch the application.
@@ -77,6 +85,15 @@ public class Interface extends JFrame {
 		menu.add(salvarOption);
 		
 		JMenuItem limparTelaOption = new JMenuItem("Limpar tela");
+		limparTelaOption.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ad.limpaCanvas();
+				
+			}
+		});
 		menu.add(limparTelaOption);
 		
 		JMenuItem sairOption = new JMenuItem("Sair");
@@ -84,13 +101,11 @@ public class Interface extends JFrame {
 		getContentPane().setLayout(null);
 		//------------------------------------------------------
 		
+		
 		//Área de desennho -------------------------------------
-		JPanel paintPanel = new JPanel();
-		paintPanel.setBounds(10, 11, 604, 447);
-		getContentPane().add(paintPanel);
-		paintPanel.setLayout(null);
-		paintPanel.setBackground(Color.WHITE);
+		ad = new AreaDesenho(this);
 		//------------------------------------------------------
+
 		
 		//Ferramentas ------------------------------------------
 		JPanel ferramentasPanel = new JPanel();
@@ -127,17 +142,17 @@ public class Interface extends JFrame {
 		new MaskFormatter("###").install(blue);
 		blue.setText("0");
 		
-		Icon circleIcon = new ImageIcon("C:\\Users\\Ednilson\\workspace\\MiniPaint\\src\\circle.png");
+		Icon circleIcon = new ImageIcon("src/resources/circle.png");
 		JButton circleBtn = new JButton("", circleIcon);
 		circleBtn.setBounds(10, 39, 50, 50);
 		ferramentasPanel.add(circleBtn);
 		
-		Icon rectangleIcon = new ImageIcon("C:\\Users\\Ednilson\\workspace\\MiniPaint\\src\\rectangle.png");
+		Icon rectangleIcon = new ImageIcon("src/resources/rectangle.png");
 		JButton rectangleBtn = new JButton("", rectangleIcon);
 		rectangleBtn.setBounds(73, 39, 50, 50);
 		ferramentasPanel.add(rectangleBtn);
 		
-		Icon triangleIcon = new ImageIcon("C:\\Users\\Ednilson\\workspace\\MiniPaint\\src\\triangle.png");
+		Icon triangleIcon = new ImageIcon("src/resources/triangle.png");
 		JButton triangleBtn = new JButton("", triangleIcon);
 		triangleBtn.setBounds(136, 39, 50, 50);
 		ferramentasPanel.add(triangleBtn);
@@ -191,97 +206,6 @@ public class Interface extends JFrame {
 			triangleBtn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					shapeAtual = "Triângulo";
-				}
-			});
-			//Painel de pintura
-			paintPanel.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					if(shapeAtual != null){
-						try {
-							Boolean erro = true;
-							Boolean cancel = false;
-							if(shapeAtual.equals("Círculo")){
-								float raio = 0;
-								while(true){
-									try {
-										raio = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite o raio do círculo", ""));
-										erro = false;
-										if(raio != 0) break;
-									}catch(Exception exc){
-										if(exc.getMessage() == null) cancel = true;
-									}
-									finally {
-										if(cancel) break;
-										else if(erro || raio == 0)
-											JOptionPane.showMessageDialog(null, "Digite um valor válido", "ERRO", JOptionPane.ERROR_MESSAGE);
-									}
-								}
-								if(raio != 0){
-									Circulo aux = new Circulo(corAtual, raio);
-									aux.setX(e.getX());
-									aux.setX(e.getY());
-									shapes.add(aux);
-								}
-							} else if (shapeAtual.equals("Retângulo") || shapeAtual.equals("Triângulo")){
-								float base = 0;
-								float altura = 0;
-								//Define forma
-								String tipoForma = shapeAtual.equals("Retângulo") ? "retângulo" : "triângulo";
-								//Base
-								while(true){
-									try {
-										base = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite a base do " + tipoForma, ""));
-										erro = false;
-										if(base != 0) break;
-									}catch(Exception exc){
-										if(exc.getMessage() == null) cancel = true;
-									}
-									finally {
-										if(cancel) break;
-										else if(erro || base == 0)
-											JOptionPane.showMessageDialog(null, "Digite um valor válido", "ERRO", JOptionPane.ERROR_MESSAGE);
-									}
-								}
-								//Altura
-								erro = true;
-								cancel = false;
-								if(base != 0){
-									while(true){
-										try {
-											altura = Float.parseFloat(JOptionPane.showInputDialog(null, "Digite a altura do " + tipoForma, ""));
-											erro = false;
-											if(altura != 0) break;
-										}catch(Exception exc){
-											if(exc.getMessage() == null) cancel = true;
-										}
-										finally {
-											if(cancel) break;
-											else if(erro || altura == 0)
-												JOptionPane.showMessageDialog(null, "Digite um valor válido", "ERRO", JOptionPane.ERROR_MESSAGE);
-										}
-									}
-								}
-								if(base != 0 && altura != 0){
-									if(shapeAtual.equals("Retângulo")){
-										Retangulo aux = new Retangulo(corAtual, base, altura);
-										aux.setX(e.getX());
-										aux.setX(e.getY());
-										shapes.add(aux);
-									} else {
-										Triangulo aux = new Triangulo(corAtual, base, altura);
-										aux.setX(e.getX());
-										aux.setX(e.getY());
-										shapes.add(aux);
-										}
-								}
-							}
-							shapeAtual = null;
-						}
-						catch(Exception ex){
-							JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro ao adicionar forma ao panel", JOptionPane.ERROR_MESSAGE);
-						}
-					}
 				}
 			});
 		}

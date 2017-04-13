@@ -1,3 +1,4 @@
+package model;
 import java.awt.Color;
 
 public class Retangulo extends Shape{
