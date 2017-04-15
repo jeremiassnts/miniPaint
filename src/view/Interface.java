@@ -3,9 +3,11 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.LayoutManager;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
@@ -49,7 +51,9 @@ public class Interface extends JFrame {
 	public static Color corAtual = Color.BLACK;
 	public static String shapeAtual = null;
 	public static List<Shape> shapes = new ArrayList<>();
+	public static List<JButton> buttons = new ArrayList<>();
 	public static AreaDesenho ad;
+	public static JScrollPane formasScrollPanel;
 
 	/**
 	 * Launch the application.
@@ -91,7 +95,7 @@ public class Interface extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				ad.limpaCanvas();
-				
+				shapes = new ArrayList<>();
 			}
 		});
 		menu.add(limparTelaOption);
@@ -99,6 +103,14 @@ public class Interface extends JFrame {
 		JMenuItem sairOption = new JMenuItem("Sair");
 		menu.add(sairOption);
 		getContentPane().setLayout(null);
+		sairOption.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.exit(0);
+			}
+		});
 		//------------------------------------------------------
 		
 		
@@ -166,7 +178,9 @@ public class Interface extends JFrame {
 		//------------------------------------------------------
 		
 		//Formas -----------------------------------------------
-		JScrollPane formasScrollPanel = new JScrollPane();
+		formasScrollPanel = new JScrollPane();
+		formasScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		formasScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		formasScrollPanel.setBounds(10, 137, 171, 272);
 		ferramentasPanel.add(formasScrollPanel);
 		

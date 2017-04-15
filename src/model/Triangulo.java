@@ -6,8 +6,8 @@ public class Triangulo extends Shape{
 	private float base;
 	private float altura;
 	
-	public Triangulo(Color Cor, float Base, float Altura){
-		super("Triângulo", Cor);
+	public Triangulo(int size, Color Cor, float Base, float Altura){
+		super(size, "Triângulo", Cor);
 		base = Base;
 		altura = Altura;
 	}
@@ -53,5 +53,8 @@ public class Triangulo extends Shape{
 	}
 	public float getWidth(){
 		return base;
+	}
+	public int getID(){
+		return id;
 	}
 }

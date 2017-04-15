@@ -5,8 +5,8 @@ public class Circulo extends Shape{
 	
 	private float raio;
 	
-	public Circulo(Color Cor, float Raio){
-		super("Círculo", Cor);
+	public Circulo(int size, Color Cor, float Raio){
+		super(size, "Círculo", Cor);
 		raio = Raio;
 	}
 	
@@ -44,5 +44,8 @@ public class Circulo extends Shape{
 	}
 	public float getWidth(){
 		return raio * 2;
+	}
+	public int getID(){
+		return id;
 	}
 }

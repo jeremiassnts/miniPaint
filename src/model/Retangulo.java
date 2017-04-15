@@ -6,8 +6,8 @@ public class Retangulo extends Shape{
 	private float base;
 	private float altura;
 	
-	public Retangulo(Color Cor, float Base, float Altura){
-		super("Retângulo", Cor);
+	public Retangulo(int size, Color Cor, float Base, float Altura){
+		super(size, "Retângulo", Cor);
 		base = Base;
 		altura = Altura;
 	}
@@ -54,5 +54,8 @@ public class Retangulo extends Shape{
 	}
 	public float getWidth(){
 		return base;
+	}
+	public int getID(){
+		return id;
 	}
 }

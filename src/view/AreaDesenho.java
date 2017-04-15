@@ -82,17 +82,21 @@ public class AreaDesenho extends JPanel implements ActionListener, MouseListener
 				if (s instanceof Circulo) {
 					Circulo c = (Circulo) s;
 					g.setColor(c.getCor());
-					g.drawOval(c.getX(), c.getY(), Math.round(c.getRaio()), Math.round(c.getRaio()));
+					int x = c.getX() - Math.round(c.getRaio());
+					int y = c.getY() - Math.round(c.getRaio());
+					g.drawOval(x, y, Math.round(c.getRaio()) * 2, Math.round(c.getRaio()) * 2);
 				} else if (s instanceof Retangulo) {
 					Retangulo r = (Retangulo) s;
 					g.setColor(r.getCor());
-					g.drawRect(r.getX(), r.getY(), Math.round(r.getBase()), Math.round(r.getHeight()));
+					int x = r.getX() - (Math.round(r.getBase() / 2));
+					int y = r.getY() - (Math.round(r.getAltura() / 2));
+					g.drawRect(x, y, Math.round(r.getBase()), Math.round(r.getHeight()));
 				} else {
 					Triangulo t = (Triangulo) s;
 					Graphics2D g2d = (Graphics2D) g;
 					Polygon triangle = new Polygon();
 					int x = t.getX();
-					int y = t.getY();
+					int y = t.getY() - Math.round(t.getAltura() / 2);
 					int b = Math.round(t.getBase());
 					int h = Math.round(t.getAltura());
 					triangle.addPoint(x, y);
