@@ -57,4 +57,7 @@ public class Triangulo extends Shape{
 	public int getID(){
 		return id;
 	}
+	public String toString(){
+		return this.id+" - Triângulo";
+	}
 }

@@ -48,11 +48,9 @@ import java.awt.event.MouseAdapter;
 public class Interface extends JFrame {
 
 	public static JPanel contentPane;
-	public static Color corAtual = Color.BLACK;
-	public static String shapeAtual = null;
 	public static List<Shape> shapes = new ArrayList<>();
-	public static List<JButton> buttons = new ArrayList<>();
-	public static AreaDesenho ad;
+	public AreaDesenho ad;
+	public static Ferramentas f;
 	public static JScrollPane formasScrollPanel;
 
 	/**
@@ -75,6 +73,7 @@ public class Interface extends JFrame {
 	 * @throws ParseException 
 	 */
 	public Interface() throws ParseException {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 841, 532);
 		
@@ -83,12 +82,18 @@ public class Interface extends JFrame {
 		setJMenuBar(menu);
 		
 		JMenuItem abrirOption = new JMenuItem("Abrir");
+		abrirOption.setIcon(new ImageIcon(Interface.class.getResource("/javax/swing/plaf/metal/icons/ocean/directory.gif")));
+		abrirOption.setHorizontalAlignment(SwingConstants.CENTER);
 		menu.add(abrirOption);
 		
 		JMenuItem salvarOption = new JMenuItem("Salvar");
+		salvarOption.setIcon(new ImageIcon(Interface.class.getResource("/javax/swing/plaf/metal/icons/ocean/floppy.gif")));
+		salvarOption.setHorizontalAlignment(SwingConstants.CENTER);
 		menu.add(salvarOption);
 		
 		JMenuItem limparTelaOption = new JMenuItem("Limpar tela");
+		limparTelaOption.setIcon(new ImageIcon(Interface.class.getResource("/com/sun/javafx/scene/web/skin/FontBackgroundColor_16x16_JFX.png")));
+		limparTelaOption.setHorizontalAlignment(SwingConstants.CENTER);
 		limparTelaOption.addActionListener(new ActionListener() {
 			
 			@Override
@@ -96,11 +101,14 @@ public class Interface extends JFrame {
 				// TODO Auto-generated method stub
 				ad.limpaCanvas();
 				shapes = new ArrayList<>();
+				f.relista();
 			}
 		});
 		menu.add(limparTelaOption);
 		
 		JMenuItem sairOption = new JMenuItem("Sair");
+		sairOption.setIcon(new ImageIcon(Interface.class.getResource("/javax/swing/plaf/metal/icons/ocean/close.gif")));
+		sairOption.setHorizontalAlignment(SwingConstants.CENTER);
 		menu.add(sairOption);
 		getContentPane().setLayout(null);
 		sairOption.addActionListener(new ActionListener() {
@@ -118,113 +126,8 @@ public class Interface extends JFrame {
 		ad = new AreaDesenho(this);
 		//------------------------------------------------------
 
-		
 		//Ferramentas ------------------------------------------
-		JPanel ferramentasPanel = new JPanel();
-		ferramentasPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		ferramentasPanel.setBounds(624, 38, 191, 420);
-		getContentPane().add(ferramentasPanel);
-		ferramentasPanel.setLayout(null);
-		
-		JPanel CorPanel = new JPanel();
-		CorPanel.setBackground(Color.BLACK);
-		CorPanel.setBounds(10, 11, 18, 17);
-		ferramentasPanel.add(CorPanel);
-		
-		//Botão cor principal
-		Button mudarCor = new Button("OK");
-		mudarCor.setBounds(154, 11, 32, 17);
-		ferramentasPanel.add(mudarCor);
-		
-		JFormattedTextField red = new JFormattedTextField();
-		red.setBounds(38, 11, 32, 17);
-		ferramentasPanel.add(red);
-		new MaskFormatter("###").install(red);
-		red.setText("0");
-		
-		JFormattedTextField green = new JFormattedTextField();
-		green.setBounds(77, 11, 32, 17);
-		ferramentasPanel.add(green);
-		new MaskFormatter("###").install(green);
-		green.setText("0");
-		
-		JFormattedTextField blue = new JFormattedTextField();
-		blue.setBounds(116, 11, 32, 17);
-		ferramentasPanel.add(blue);
-		new MaskFormatter("###").install(blue);
-		blue.setText("0");
-		
-		Icon circleIcon = new ImageIcon("src/resources/circle.png");
-		JButton circleBtn = new JButton("", circleIcon);
-		circleBtn.setBounds(10, 39, 50, 50);
-		ferramentasPanel.add(circleBtn);
-		
-		Icon rectangleIcon = new ImageIcon("src/resources/rectangle.png");
-		JButton rectangleBtn = new JButton("", rectangleIcon);
-		rectangleBtn.setBounds(73, 39, 50, 50);
-		ferramentasPanel.add(rectangleBtn);
-		
-		Icon triangleIcon = new ImageIcon("src/resources/triangle.png");
-		JButton triangleBtn = new JButton("", triangleIcon);
-		triangleBtn.setBounds(136, 39, 50, 50);
-		ferramentasPanel.add(triangleBtn);
+		f = new Ferramentas(this);
 		//------------------------------------------------------
-		
-		//Labels -----------------------------------------------
-		JLabel lblFormas = new JLabel("FORMAS");
-		lblFormas.setBounds(41, 110, 107, 16);
-		ferramentasPanel.add(lblFormas);
-		lblFormas.setHorizontalAlignment(SwingConstants.CENTER);
-		//------------------------------------------------------
-		
-		//Formas -----------------------------------------------
-		formasScrollPanel = new JScrollPane();
-		formasScrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		formasScrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		formasScrollPanel.setBounds(10, 137, 171, 272);
-		ferramentasPanel.add(formasScrollPanel);
-		
-		JLabel lblFerramentas = new JLabel("FERRAMENTAS");
-		lblFerramentas.setHorizontalAlignment(SwingConstants.CENTER);
-		lblFerramentas.setBounds(648, 11, 139, 16);
-		getContentPane().add(lblFerramentas);
-		//------------------------------------------------------
-		
-		//Ações
-		try{
-			//Mudar cor objeto nao criado
-			mudarCor.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					int r = Integer.parseInt(red.getText().trim());
-					int g = Integer.parseInt(green.getText().trim());
-					int b = Integer.parseInt(blue.getText().trim());
-					if(r > 255 || g > 255 || b > 255)
-						JOptionPane.showMessageDialog(null, "O intervalo de cores é de 0 a 255", "ERRO", JOptionPane.ERROR_MESSAGE);
-					else {
-						CorPanel.setBackground(new Color(r, g, b));
-						corAtual = new Color(r, g, b);
-					}
-				}
-			});
-			//Shapes
-			circleBtn.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					shapeAtual = "Círculo";
-				}
-			});
-			rectangleBtn.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					shapeAtual = "Retângulo";
-				}
-			});
-			triangleBtn.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					shapeAtual = "Triângulo";
-				}
-			});
-		}
-		catch(Exception e){
-			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
-		}
 	}
 }

@@ -48,4 +48,7 @@ public class Circulo extends Shape{
 	public int getID(){
 		return id;
 	}
+	public String toString(){
+		return this.id+" - Círculo";
+	}
 }

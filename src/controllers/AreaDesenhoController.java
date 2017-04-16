@@ -8,25 +8,26 @@ import javax.swing.JOptionPane;
 import model.Circulo;
 import model.Retangulo;
 import model.Triangulo;
+import view.Ferramentas;
 import view.Interface;
 
 public class AreaDesenhoController {
 
 	public boolean clicaMouse(MouseEvent e) throws IllegalArgumentException {
-		if (Interface.shapeAtual != null) {
-			if (Interface.shapeAtual.equals("Círculo")) {				//	Adiciona Círculo à lista
+		if (Ferramentas.shapeAtual != null) {
+			if (Ferramentas.shapeAtual.equals("Círculo")) {				//	Adiciona Círculo à lista
 				String input = JOptionPane.showInputDialog(null, "Digite o raio do círculo", "");
 				if (input != null) {
 					float raio = Float.parseFloat(input);
 					if (raio <= 0) {
 						throw new IllegalArgumentException();
 					}
-					Circulo aux = new Circulo(Interface.shapes.size(), Interface.corAtual, raio);
+					Circulo aux = new Circulo(Interface.shapes.size(), Ferramentas.corAtual, raio);
 					aux.setX(e.getX());
 					aux.setY(e.getY());
 					Interface.shapes.add(aux);
 				}
-			}else if(Interface.shapeAtual.equals("Retângulo")){			//	Adiciona Retângulo à lista
+			}else if(Ferramentas.shapeAtual.equals("Retângulo")){			//	Adiciona Retângulo à lista
 				String inputBase = JOptionPane.showInputDialog(null, "Digite a base do retângulo", "");
 				String inputLado = JOptionPane.showInputDialog(null, "Digite o lado do retângulo", "");
 				if (inputBase != null && inputLado != null) {
@@ -35,7 +36,7 @@ public class AreaDesenhoController {
 					if (base <= 0 || lado <= 0) {
 						throw new IllegalArgumentException();
 					}
-					Retangulo aux = new Retangulo(Interface.shapes.size(), Interface.corAtual, base, lado);
+					Retangulo aux = new Retangulo(Interface.shapes.size(), Ferramentas.corAtual, base, lado);
 					aux.setX(e.getX());
 					aux.setY(e.getY());
 					Interface.shapes.add(aux);
@@ -49,17 +50,15 @@ public class AreaDesenhoController {
 					if (base <= 0 || lado <= 0) {
 						throw new IllegalArgumentException();
 					}
-					Triangulo aux = new Triangulo(Interface.shapes.size(), Interface.corAtual, base, lado);
+					Triangulo aux = new Triangulo(Interface.shapes.size(), Ferramentas.corAtual, base, lado);
 					aux.setX(e.getX());
 					aux.setY(e.getY());
 					Interface.shapes.add(aux);
 				}
 			}
-			//JButton newShapeBtn = new JButton(Interface.shapes.get(Interface.shapes.size() - 1).getNome());
-			//newShapeBtn.setBounds(10, 137 + (30 * Interface.formasScrollPanel.getComponentCount()), 171, 30);
-			//Interface.formasScrollPanel.add(newShapeBtn);
-			//JOptionPane.showMessageDialog(null, "ID: " + Interface.shapes.get(Interface.shapes.size() - 1).getID());
-			Interface.shapeAtual = null;
+			Ferramentas.lblEscolhido.setText("");
+			Ferramentas.shapeAtual = null;
+			Interface.f.relista();
 			return true;
 		}else{
 			return false;

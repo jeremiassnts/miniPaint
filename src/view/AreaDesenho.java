@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -23,6 +24,7 @@ public class AreaDesenho extends JPanel implements ActionListener, MouseListener
 	private boolean cleanIt;
 
 	public AreaDesenho(Interface i) {
+		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 		this.cleanIt = false;
 		this.setBounds(10, 11, 604, 447);
 		i.getContentPane().add(this);

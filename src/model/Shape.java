@@ -2,17 +2,19 @@ package model;
 import java.awt.Color;
 
 public abstract class Shape {
-
+	
+	protected static int idIncrement;
 	protected int id;
 	protected String nome;
 	protected Color cor;
 	protected int x;
 	protected int y;
 	
-	public Shape(int size, String nm, Color Cor){
-		id = size;
-		nome = nm;
-		cor = Cor;
+	public Shape(int id, String nm, Color Cor){
+		Shape.idIncrement++;
+		this.id = Shape.idIncrement;
+		this.nome = nm;
+		this.cor = Cor;
 	}
 	
 	public abstract void setCor(Color Cor);

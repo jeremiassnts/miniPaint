@@ -58,4 +58,7 @@ public class Retangulo extends Shape{
 	public int getID(){
 		return id;
 	}
+	public String toString(){
+		return this.id+" - Retângulo";
+	}
 }
