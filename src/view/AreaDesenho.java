@@ -22,8 +22,10 @@ import model.Triangulo;
 public class AreaDesenho extends JPanel implements ActionListener, MouseListener {
 
 	private boolean cleanIt;
+	private Interface i;
 
 	public AreaDesenho(Interface i) {
+		this.i = i;
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 		this.cleanIt = false;
 		this.setBounds(10, 11, 604, 447);
@@ -35,7 +37,8 @@ public class AreaDesenho extends JPanel implements ActionListener, MouseListener
 
 	public void mouseClicked(MouseEvent evt) {
 
-		AreaDesenhoController adc = new AreaDesenhoController();
+		AreaDesenhoController adc = new AreaDesenhoController(this.i);
+		
 		try {
 			adc.clicaMouse(evt);
 			repaint(); // esse método limpa a tela, e rechama o método
@@ -71,8 +74,8 @@ public class AreaDesenho extends JPanel implements ActionListener, MouseListener
 
 	}
 	
-	public void limpaCanvas(){
-		this.cleanIt = true;
+	public void limpaCanvas(Boolean limpa){				// True para limpar o canvas, false pra somente dar um refresh
+		this.cleanIt = limpa;
 		repaint();
 	}
 
@@ -80,7 +83,7 @@ public class AreaDesenho extends JPanel implements ActionListener, MouseListener
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (!cleanIt) {
-			for (Shape s : Interface.shapes) {
+			for (Shape s : this.i.getShapes()) {
 				if (s instanceof Circulo) {
 					Circulo c = (Circulo) s;
 					g.setColor(c.getCor());
@@ -92,7 +95,7 @@ public class AreaDesenho extends JPanel implements ActionListener, MouseListener
 					g.setColor(r.getCor());
 					int x = r.getX() - (Math.round(r.getBase() / 2));
 					int y = r.getY() - (Math.round(r.getAltura() / 2));
-					g.drawRect(x, y, Math.round(r.getBase()), Math.round(r.getHeight()));
+					g.drawRect(x, y, Math.round(r.getBase()), Math.round(r.getAltura()));
 				} else {
 					Triangulo t = (Triangulo) s;
 					Graphics2D g2d = (Graphics2D) g;

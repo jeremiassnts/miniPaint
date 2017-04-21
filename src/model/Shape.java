@@ -10,7 +10,7 @@ public abstract class Shape {
 	protected int x;
 	protected int y;
 	
-	public Shape(int id, String nm, Color Cor){
+	public Shape(String nm, Color Cor){
 		Shape.idIncrement++;
 		this.id = Shape.idIncrement;
 		this.nome = nm;
@@ -26,7 +26,7 @@ public abstract class Shape {
 	public abstract int getX();
 	public abstract int getY();
 	public abstract int getID();
-	
-	public abstract float getHeight();
-	public abstract float getWidth();
+	public String toString(){
+		return this.id + " - " + this.nome;
+	}
 }

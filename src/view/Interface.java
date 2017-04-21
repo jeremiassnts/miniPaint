@@ -46,32 +46,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 
 public class Interface extends JFrame {
+	
+	private List<Shape> shapes = new ArrayList<>();
+	private AreaDesenho areaDesenho;
+	private Ferramentas ferramentas;
+	private JScrollPane formasScrollPanel;
 
-	public static JPanel contentPane;
-	public static List<Shape> shapes = new ArrayList<>();
-	public AreaDesenho ad;
-	public static Ferramentas f;
-	public static JScrollPane formasScrollPanel;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Interface frame = new Interface();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	/**
-	 * Create the frame.
-	 * @throws ParseException 
-	 */
 	public Interface() throws ParseException {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -99,9 +79,9 @@ public class Interface extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				ad.limpaCanvas();
+				areaDesenho.limpaCanvas(true);
 				shapes = new ArrayList<>();
-				f.relista();
+				ferramentas.relista();
 			}
 		});
 		menu.add(limparTelaOption);
@@ -123,11 +103,36 @@ public class Interface extends JFrame {
 		
 		
 		//Área de desennho -------------------------------------
-		ad = new AreaDesenho(this);
+		areaDesenho = new AreaDesenho(this);
 		//------------------------------------------------------
 
 		//Ferramentas ------------------------------------------
-		f = new Ferramentas(this);
+		ferramentas = new Ferramentas(this);
 		//------------------------------------------------------
+	}
+	
+	public List<Shape> getShapes() {
+		return shapes;
+	}
+	public void setShapes(List<Shape> shapes) {
+		this.shapes = shapes;
+	}
+	public  Ferramentas getFerramentas() {
+		return ferramentas;
+	}
+	public void setFerramentas(Ferramentas f) {
+		this.ferramentas = f;
+	}
+	public JScrollPane getFormasScrollPanel() {
+		return formasScrollPanel;
+	}
+	public void setFormasScrollPanel(JScrollPane formasScrollPanel) {
+		this.formasScrollPanel = formasScrollPanel;
+	}
+	public AreaDesenho getAreaDesenho() {
+		return areaDesenho;
+	}
+	public void setAreaDesenho(AreaDesenho ad) {
+		this.areaDesenho = ad;
 	}
 }

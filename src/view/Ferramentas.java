@@ -27,12 +27,15 @@ import javax.swing.ListModel;
 
 public class Ferramentas extends JPanel {
 
-	public static ShapesList lista;
-	public static JLabel lblEscolhido;
-	public static Color corAtual = Color.BLACK;
-	public static String shapeAtual = null;
+	private ShapesList lista;
+	private JLabel lblEscolhido;
+	private Color corAtual = Color.BLACK;
+	private String shapeAtual = null;
+	private Interface i;
 
 	public Ferramentas(Interface i) {
+		this.i = i;
+		
 		this.setBorder(new LineBorder(new Color(0, 0, 0)));
 		this.setBounds(624, 38, 191, 420);
 		i.getContentPane().add(this);
@@ -88,11 +91,12 @@ public class Ferramentas extends JPanel {
 
 		/* panelInsideScroll = new JPanel(); */
 
-		Shape[] shapes = new Shape[Interface.shapes.size()];
+		Shape[] shapes = new Shape[this.i.getShapes().size()];
 
-		Interface.shapes.toArray(shapes);
+		this.i.getShapes().toArray(shapes);
 
-		lista = new ShapesList(shapes);
+		lista = new ShapesList(this.i, shapes);
+		lista.setToolTipText("<html>\r\n\t<b>Lista de Formas: </b> <br/> \r\n\tAqui \u00E9 listado as formas presentes no Canvas\r\n</html>");
 
 		// Formas -----------------------------------------------
 		JScrollPane formasScrollPanel = new JScrollPane(lista);
@@ -124,7 +128,7 @@ public class Ferramentas extends JPanel {
 					int r = Integer.parseInt(red.getText().trim());
 					int g = Integer.parseInt(green.getText().trim());
 					int b = Integer.parseInt(blue.getText().trim());
-					if (r > 255 || g > 255 || b > 255)
+					if (r > 255 || r < 0 || g > 255 || g < 0 || b > 255 || b < 0)
 						JOptionPane.showMessageDialog(null, "O intervalo de cores é de 0 a 255", "ERRO",JOptionPane.ERROR_MESSAGE);
 					else {
 						CorPanel.setBackground(new Color(r, g, b));
@@ -161,10 +165,51 @@ public class Ferramentas extends JPanel {
 	}
 
 	public void relista() {
-		Shape[] shapes = new Shape[Interface.shapes.size()];
+		Shape[] shapes = new Shape[this.i.getShapes().size()];
 
-		Interface.shapes.toArray(shapes);
-
-		Ferramentas.lista.setListData(shapes);
+		this.i.getShapes().toArray(shapes);
+		
+		this.lista.setListData(shapes);
 	}
+
+	public ShapesList getLista() {
+		return lista;
+	}
+
+	public void setLista(ShapesList lista) {
+		lista = lista;
+	}
+
+	public JLabel getLblEscolhido() {
+		return lblEscolhido;
+	}
+
+	public void setLblEscolhido(JLabel lblEscolhido) {
+		lblEscolhido = lblEscolhido;
+	}
+
+	public Color getCorAtual() {
+		return corAtual;
+	}
+
+	public void setCorAtual(Color corAtual) {
+		corAtual = corAtual;
+	}
+
+	public String getShapeAtual() {
+		return shapeAtual;
+	}
+
+	public void setShapeAtual(String shapeAtual) {
+		shapeAtual = shapeAtual;
+	}
+	
+	public Interface getInterface() {
+		return i;
+	}
+
+	public void setInterface(Interface i) {
+		this.i = i;
+	}
+
 }
