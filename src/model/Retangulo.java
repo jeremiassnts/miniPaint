@@ -1,7 +1,8 @@
 package model;
 import java.awt.Color;
+import java.io.Serializable;
 
-public class Retangulo extends Shape{
+public class Retangulo extends Shape implements Serializable, Comparable<Shape>{
 	
 	private float base;
 	private float altura;
@@ -51,4 +52,9 @@ public class Retangulo extends Shape{
 	public int getID(){
 		return id;
 	}
+	/*public int compareTo(Shape shape){
+		if(this.getID() > shape.getID()) return -1;
+		else if(this.getID() < shape.getID()) return 1;
+		return 0;
+	}*/
 }

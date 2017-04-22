@@ -1,7 +1,8 @@
 package model;
 import java.awt.Color;
+import java.io.Serializable;
 
-public class Circulo extends Shape{
+public class Circulo extends Shape implements Serializable, Comparable<Shape>{
 	
 	private float raio;
 	
@@ -45,4 +46,9 @@ public class Circulo extends Shape{
 	public String toString(){
 		return this.id+" - Círculo";
 	}
+	/*public int compareTo(Shape shape){
+    	if(this.getID() > shape.getID()) return -1;
+    	else if(this.getID() < shape.getID()) return 1;
+    	return 0;
+    }*/
 }

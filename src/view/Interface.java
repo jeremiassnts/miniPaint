@@ -24,12 +24,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Canvas;
 import java.awt.TextField;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.awt.Color;
 import java.awt.Dialog;
@@ -41,6 +43,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.font.ShapeGraphicAttribute;
 import java.awt.geom.Ellipse2D;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -64,11 +74,35 @@ public class Interface extends JFrame {
 		JMenuItem abrirOption = new JMenuItem("Abrir");
 		abrirOption.setIcon(new ImageIcon(Interface.class.getResource("/javax/swing/plaf/metal/icons/ocean/directory.gif")));
 		abrirOption.setHorizontalAlignment(SwingConstants.CENTER);
+		abrirOption.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					openShapes(e);
+				} catch (ClassNotFoundException | IOException e1) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "Erro ao abrir arquivo: " + e1.getMessage());
+				}
+			}
+		});
 		menu.add(abrirOption);
 		
 		JMenuItem salvarOption = new JMenuItem("Salvar");
 		salvarOption.setIcon(new ImageIcon(Interface.class.getResource("/javax/swing/plaf/metal/icons/ocean/floppy.gif")));
 		salvarOption.setHorizontalAlignment(SwingConstants.CENTER);
+		salvarOption.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					saveShapes(e);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "Erro ao salvar arquivo: " + e1.getMessage());
+				}
+			}
+		});
 		menu.add(salvarOption);
 		
 		JMenuItem limparTelaOption = new JMenuItem("Limpar tela");
@@ -134,5 +168,47 @@ public class Interface extends JFrame {
 	}
 	public void setAreaDesenho(AreaDesenho ad) {
 		this.areaDesenho = ad;
+	}
+	
+	public void saveShapes(ActionEvent e) throws IOException{
+		if(shapes.size() != 0){
+			//Pega diretório para salvar arquivo
+			JFileChooser file = new JFileChooser();
+			file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			//Pega nome do arquivo
+			String name = JOptionPane.showInputDialog("Digite o nome do arquivo") + ".dat";
+			//Verifica se não foi cancelado
+			if(file.showSaveDialog(null) != 1){
+				//Salva objetos em arquivo .dat
+				File tempFile = new File(file.getSelectedFile().getPath() + "/" + name);
+				FileOutputStream fileStream = new FileOutputStream(tempFile);
+				ObjectOutputStream obj = new ObjectOutputStream(fileStream);
+				for(Shape shape : shapes){
+					obj.writeObject(shape);
+				}
+				obj.flush();
+				obj.close();
+				JOptionPane.showMessageDialog(null, "Arquivo salvo com sucesso!");
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Não existem formas no painel para serem salvas!");
+		}
+	}
+	
+	public void openShapes(ActionEvent e) throws IOException, ClassNotFoundException{
+		JFileChooser file = new JFileChooser();
+		file.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		if(file.showSaveDialog(null) != 1){
+			FileInputStream fileStream = new FileInputStream(file.getSelectedFile().getAbsolutePath());
+			ObjectInputStream obj = new ObjectInputStream(fileStream);
+			try {
+	            while (true){ shapes.add((Shape)obj.readObject()); }
+	         } 
+	    	catch(EOFException err){ }
+	    	finally{ obj.close(); }
+			areaDesenho = new AreaDesenho(this);
+			Collections.sort(shapes);
+			ferramentas.relista();
+		}
 	}
 }
